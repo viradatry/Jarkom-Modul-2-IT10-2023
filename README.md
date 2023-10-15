@@ -87,61 +87,79 @@ nameserver="192.168.122.1"
 
 ## Jawaban 
 Nomer 2
+
 <a href="https://ibb.co/r5F1Hjm"><img src="https://i.ibb.co/CVmTQcz/Modul2-Nomer-1.jpg" alt="Modul2-Nomer-1" border="0"></a>
 
 Nomer 3
+
 <a href="https://ibb.co/bsfhrGC"><img src="https://i.ibb.co/R35nCJs/Modul2-Nomer-2.jpg" alt="Modul2-Nomer-2" border="0"></a>
 
 Nomer 4
+
 <a href="https://ibb.co/XyYnhgy"><img src="https://i.ibb.co/s5WT0G5/Modul2-Nomer-3.jpg" alt="Modul2-Nomer-3" border="0"></a>
 
 Nomer 5
+
 <a href="https://ibb.co/ZfMyWM2"><img src="https://i.ibb.co/BfC8qCn/Modul2-Nomer-5.jpg" alt="Modul2-Nomer-5" border="0"></a>
 
 Nomer 6
+
 <a href="https://ibb.co/8cbM9Gm"><img src="https://i.ibb.co/SrcNBH6/Modul2-Nomer-6-2.jpg" alt="Modul2-Nomer-6-2" border="0"></a>
 <a href="https://ibb.co/stXwd1Q"><img src="https://i.ibb.co/0QzMR9Z/Modul2-Nomer-6-1.jpg" alt="Modul2-Nomer-6-1" border="0"></a>
 
 Nomer 7
+
 <a href="https://ibb.co/VwyVJ0t"><img src="https://i.ibb.co/NThxtgs/Modul2-Nomer-7.jpg" alt="Modul2-Nomer-7" border="0"></a>
 
 Nomer 8
+
 <a href="https://ibb.co/mBB36fM"><img src="https://i.ibb.co/KGGJFT3/Modul2-Nomer-8.jpg" alt="Modul2-Nomer-8" border="0"></a>
 
 Nomer 9
+
 <a href="https://ibb.co/8mRQfDs"><img src="https://i.ibb.co/Bf7YQV3/Modul2-Nomer-9-2.jpg" alt="Modul2-Nomer-9-2" border="0"></a>
 <a href="https://ibb.co/445B5Sm"><img src="https://i.ibb.co/3SLtLFr/Modul2-Nomer-9-1.jpg" alt="Modul2-Nomer-9-1" border="0"></a>
 <a href="https://ibb.co/bHpNsTY"><img src="https://i.ibb.co/7g7rnPB/Modul2-Nomer-9-3.jpg" alt="Modul2-Nomer-9-3" border="0"></a>
 
 Nomer 10
+
 <a href="https://ibb.co/tXTHzzy"><img src="https://i.ibb.co/yScNppL/Modul2-Nomer-10.jpg" alt="Modul2-Nomer-10" border="0"></a>
 
 Nomer 11
+
 <a href="https://ibb.co/QJFmhbK"><img src="https://i.ibb.co/grMgQjR/Modul2-Nomer-11.jpg" alt="Modul2-Nomer-11" border="0"></a>
 
 Nomer 12
+
 <a href="https://ibb.co/TcMgBQF"><img src="https://i.ibb.co/H7THDck/Modul2-Nomer-12.jpg" alt="Modul2-Nomer-12" border="0"></a>
 
 Nomer 13
+
 <a href="https://ibb.co/xYK1nTQ"><img src="https://i.ibb.co/LrDxT7f/Modul2-Nomer-13.jpg" alt="Modul2-Nomer-13" border="0"></a>
 
 Nomer 14
+
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/nR26X01/Modul2-Nomer-14.jpg" alt="Modul2-Nomer-14" border="0"></a>
 
 Nomer 15
+
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/hyyrHLn/Modul2-Nomer-15.jpg" alt="Modul2-Nomer-15" border="0"></a>
 
 Nomer 16
+
 <a href="https://ibb.co/ckYYh5v"><img src="https://i.ibb.co/bQbb5h3/Modul2-Nomer-16.jpg" alt="Modul2-Nomer-16" border="0"></a>
 
 Nomer 17 & 18
+
 <a href="https://ibb.co/j5WWnWB"><img src="https://i.ibb.co/7zRRsR8/Modul2-Nomer-17-18-2jpeg.jpg" alt="Modul2-Nomer-17-18-2jpeg" border="0"></a>
 <a href="https://ibb.co/c3563sg"><img src="https://i.ibb.co/qjGNj2y/Modul2-Nomer-17-18-1.jpg" alt="Modul2-Nomer-17-18-1" border="0"></a>
 
 Nomer 19 
+
 <a href="https://ibb.co/2PNqb6b"><img src="https://i.ibb.co/4MdWQfQ/Modul2-Nomer-19.jpg" alt="Modul2-Nomer-19" border="0"></a>
 
 Nomer 20
+
 <a href="https://ibb.co/tBs7NQR"><img src="https://i.ibb.co/dB2d3jZ/Modul2-Nomer-20-1.jpg" alt="Modul2-Nomer-20-1" border="0"></a>
 <a href="https://ibb.co/BtzsPL6"><img src="https://i.ibb.co/ZVLTJdg/Modul2-Nomer-20-2.jpg" alt="Modul2-Nomer-20-2" border="0"></a>
 

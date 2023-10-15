@@ -10,6 +10,85 @@
 ## Soal No 1 ##
 Yudhistira akan digunakan sebagai DNS Master, Werkudara sebagai DNS Slave, Arjuna merupakan Load Balancer yang terdiri dari beberapa Web Server yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Kita membuat topologi yang sudah di tentukan pada modul dengan menambahkan fitur-fitur gambar pada gns3 setelah tersusun melakukan penyambungan agar Jalur pada jaringan yang harus dilewati paket-paket data untuk dapat masuk ke jaringan yang lain.
 
+## Soal No 2 ##
+Kita akan membuat domain  www.arjuna.yyy.com dengan yyy merupakan kode kelompok.
+
+- Menginstall Dependencies untuk mengupdate daftar paket dan menginstal perangkat lunak pada bind.
+```  
+# Menginstall dependencies
+apt-get update -y
+apt-get install bind9 -y
+```
+
+- Selanjutnya kita membuat folder jarkom terlebih dahulu di dalam /etc/bind.
+```
+mkdir /etc/bind/jarkom
+```
+- Membuat perintah dengan configurasi domain sesuai syntax nama kelompok.
+```
+echo 'zone "arjuna.it10.com" {
+  type master;
+  notify yes;
+  also-notify {192.238.1.5; };
+  allow-transfer {192.238.1.5; };
+  file "/etc/bind/jarkom/arjuna.it10.com";
+};
+```
+- Copykan file db.local pada path  /etc/bind ke dalam folder jarkom yang sudah kita buat tadi.
+```
+cp /etc/bind/db.local /etc/bind/jarkom/arjuna.it10.com
+```
+- Kemudian buka file jarkom dan edit dengan IP EniesLobby masing-masing kelompok.
+```
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     arjuna.it10.com. root.arjuna.it10.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      arjuna.it10.com.
+@       IN      A       192.238.2.2
+www     IN      CNAME   arjuna.it10.com.' > /etc/bind/jarkom/arjuna.it10.com
+```
+
+- Lalu restart bin9, ini akan menghentikan layanan bind yang sedang berjalan, kemudian akan segera memulainya kembali perubahan konfigurasi pada server DNS.
+```
+service bind9 restart
+```
+
+## Soal No 3 ##
+Memebuat website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
+
+- Pada client arahkan nameserver menuju IP dengan mengedit file resolv.conf dengan mengetikkan perintah.
+```
+nano /etc/resolv.conf
+```
+- menentukan server nama untuk akses internet
+```
+nameserver="192.168.122.1"
+```
+- Untuk mencoba koneksi DNS, lakukan ping terlebih dahulu untuk mengetahui server jalan atau tidak.
+
+-
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Source Code 
 

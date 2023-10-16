@@ -24,7 +24,7 @@ apt-get install bind9 -y
 ```
 mkdir /etc/bind/jarkom
 ```
-- Membuat perintah dengan configurasi domain sesuai syntax nama kelompok.
+- Selanjutnya membuat perintah dengan configurasi domain, untuk membuat website utama yang kemudian nantinya akan dikonfigurasikan ke Arjuna. Lalu, nodes client Nakula yang akan mencoba mengakses ke website tersebut.
 ```
 echo 'zone "arjuna.it10.com" {
   type master;
@@ -38,7 +38,7 @@ echo 'zone "arjuna.it10.com" {
 ```
 cp /etc/bind/db.local /etc/bind/jarkom/arjuna.it10.com
 ```
-- Kemudian buka file jarkom dan edit dengan IP EniesLobby masing-masing kelompok.
+- Kemudian buka file jarkom dan isikan program untuk menkonfigurasikan data bind yang digunakan untuk mengelola DNS server arjuna.
 ```
 ; BIND data file for local loopback interface
 ;
@@ -59,22 +59,114 @@ www     IN      CNAME   arjuna.it10.com.' > /etc/bind/jarkom/arjuna.it10.com
 ```
 service bind9 restart
 ```
+- Jika sudah, lakukan ping arjuna.IT10.com -c pada nodes client Nakula.
 <a href="https://ibb.co/r5F1Hjm"><img src="https://i.ibb.co/CVmTQcz/Modul2-Nomer-1.jpg" alt="Modul2-Nomer-1" border="0"></a>
 
 ## Soal No 3 ##
-Memebuat website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
+Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
 
-- Pada client arahkan nameserver menuju IP dengan mengedit file resolv.conf dengan mengetikkan perintah.
+- Buatlah domain pada Yudhistira untuk abimanyu yang berisikan seperti dibawah.
 ```
-nano /etc/resolv.conf
+echo 'zone "arjuna.it10.com" {
+  type master;
+  notify yes;
+  also-notify {192.238.1.5; };
+  allow-transfer {192.238.1.5; };
+  file "/etc/bind/jarkom/arjuna.it10.com";
+};
+
 ```
-- menentukan server nama untuk akses internet
+- Selanjutnya, lakukan cp /etc/bind/db.local /etc/bind/jarkom/abimanyu.IT10.com. isikan program untuk menkonfigurasikan data bind yang digunakan untuk mengelola DNS server abimanyu.
+```
+echo ';
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     arjuna.it10.com. root.arjuna.it10.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      arjuna.it10.com.
+@       IN      A       192.238.2.2
+www     IN      CNAME   arjuna.it10.com.' > /etc/bind/jarkom/arjuna.it10.com
+
+```
+- Selanjutnya, pada nodes client Nakula melakukan nano /root/.bashrc dan isikan konfigurasi ip.
 ```
 nameserver="192.168.122.1"
 ```
-- Untuk mencoba koneksi DNS, lakukan ping terlebih dahulu untuk mengetahui server jalan atau tidak.
+- Kemudian restart bind9 dengan perintah
+```
+service bind9 restart
+```
+- Selanjutnya, lakukan ping abimanyu.IT10.com -c pada nodes client Nakula. Jika berhasil, maka akan terlihat seperti gambar dibawah bahwa client Nakula telah berhasil connect ke host abimanyu.IT10.com.
+<a href="https://ibb.co/bsfhrGC"><img src="https://i.ibb.co/R35nCJs/Modul2-Nomer-2.jpg" alt="Modul2-Nomer-2" border="0"></a>
 
--
+## Soal No 4 ##
+Disini karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
+
+- Buka /root/.bashrc pada Yudhistira dan tambahkan parikesit pada konfigurasi data ke bind untuk mengelola DNS servernya.
+- Jika sudah lakukan restart bind9 dengan perintah
+```
+service bind9 restart
+```
+- Selanjutnya pada nodes client Nakula, lakukan ping parikesit.abimanyu.IT10.com -c.
+<a href="https://ibb.co/bsfhrGC"><img src="https://i.ibb.co/R35nCJs/Modul2-Nomer-2.jpg" alt="Modul2-Nomer-2" border="0"></a>
+
+## Soal No 5 ##
+Buat juga reverse domain untuk domain utama. (Abimanyu saja yang direverse)
+
+Edit file /etc/bind/named.conf.local pada Yudhistira. Lalu tambahkan konfigurasi berikut ke dalam file conf Tambahkan reverse dari 3 byte awal dari IP yang ingin dilakukan Reverse DNS.
+```
+zone "3.238.192.in-addr.arpa" {
+  type master;
+  file "/etc/bind/jarkom/3.238.192.in-addr.arpa";
+};' > /etc/bind/named.conf.local
+```
+- Copykan file db.local pada path /etc/bind ke dalam folder jarkom yang baru saja dibuat cp /etc/bind/db.local. Edit file menjadi seperti dibawah.
+```
+echo ';
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     abimanyu.it10.com. root.abimanyu.it10.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+3.238.192.in-addr.arpa  IN      NS      abimanyu.it10.com.
+3                       IN      PTR     abimanyu.it10.com.' > /etc/bind/jarkom/3.238.192.in-addr.arpa
+```
+- Kemudian restart bind9 dengan perintah
+```
+service bind9 restart
+```
+- Lalu, pada client nodes Nakula untuk mengecek apakah konfigurasi sudah benar atau belum, lakukan perintah berikut
+```
+apt-get update
+apt-get install dnsutils
+```
+- Jika berhasil maka akan terlihat seperti gambar dibawah ini
+<a href="https://ibb.co/ZfMyWM2"><img src="https://i.ibb.co/BfC8qCn/Modul2-Nomer-5.jpg" alt="Modul2-Nomer-5" border="0"></a>
+
+## Soal No 6 ##
+Agar dapat tetap dihubungi ketika DNS Server Yudhistira bermasalah, buat juga Werkudara sebagai DNS Slave untuk domain utama.
+
+
+
+
+
+
+
+
+
+
+
 
 
   

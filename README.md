@@ -191,7 +191,103 @@ zone "abimanyu.it10.com" {
 ## Soal No 7 ##
 Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatlah subdomain khusus untuk perang yaitu baratayuda.abimanyu.yyy.com dengan alias www.baratayuda.abimanyu.yyy.com yang didelegasikan dari Yudhistira ke Werkudara dengan IP menuju ke Abimanyu dalam folder Baratayuda.
 
--
+- Edit file abimanyu.IT10.com menjadi seperti dibawah ini
+```
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     abimanyu.it10.com. root.abimanyu.it10.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@               IN      NS      abimanyu.it10.com.
+@               IN      A       192.238.3.3
+www             IN      CNAME   abimanyu.it10.com.
+parikesit       IN      A       192.238.3.3
+ns1             IN      A       192.238.1.5
+baratayuda      IN      NS      ns1' > /etc/bind/jarkom/abimanyu.it10.com
+```
+- Kemudian restart bind9 dengan perintah
+```
+service bind9 restart
+```
+- Setelah menyelesaikan semua pada Yuhistira lalu bukalah Werkudara lalu edit file /etc/bind/named.conf.local dan tambahkan
+```
+zone "3.238.192.in-addr.arpa" {
+  type master;
+  file "/etc/bind/jarkom/3.238.192.in-addr.arpa";
+};'
+```
+- lalu buat direktori baratayuda dengan mkdir /etc/bind/baratayuda. Copykan file db.local pada path /etc/bind ke dalam folder jarkom yang baru saja dibuat cp /etc/bind/db.local /etc/bind/jarkom/baratayuda/abimanyu.IT10.com. Lalu edit file seperti dibawah
+```
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     arjuna.it10.com. root.arjuna.it10.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      arjuna.it10.com.
+@       IN      A       192.238.2.2
+www     IN      CNAME   arjuna.it10.com.' > /etc/bind/jarkom/arjuna.it10.com
+
+```
+- Setelah itu restart kembali bind dengan perintah service bind9 restart
+- Setelah restart bind9 untuk memastikan bahwa DNS SLAVE sudah berjalan matikan bind9 DNS MASTER dengan service bind9 stop lalu cek menggunakan ping
+```
+ping baratayuda.abimanyu.IT10.com
+ping www.baratayuda.abimanyu.IT10.com
+```
+- Jika dia berhasil akan menampilkan hasil seperti pada gambar dibawah
+<a href="https://ibb.co/VwyVJ0t"><img src="https://i.ibb.co/NThxtgs/Modul2-Nomer-7.jpg" alt="Modul2-Nomer-7" border="0"></a>
+
+
+## Soal No 8 ##
+Untuk informasi yang lebih spesifik mengenai Ranjapan Baratayuda, buatlah subdomain melalui Werkudara dengan akses rjp.baratayuda.abimanyu.yyy.com dengan alias www.rjp.baratayuda.abimanyu.yyy.com yang mengarah ke Abimanyu.
+
+- edit file /etc/bind/jarkom/baratayuda/abimanyu.IT10.com pada Werkudara menjadi seperti dibawah ini
+```
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     rjp.baratayuda.abimanyu.it10.com. root.rjp.baratayuda.abimanyu.it10.com. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@           IN      NS      rjp.baratayuda.abimanyu.it10.com.
+@           IN      A       192.238.3.3
+www         IN      CNAME   rjp.baratayuda.abimanyu.it10.com.' > /etc/bind/jarkom/baratayuda/rjp.baratayuda.abimanyu.it10.com
+```
+- Kemudian lakukan restart bind9 dengan perintah service bind9 restart
+- Setelah restart bind9 untuk memastikan jika DNS SLAVE sudah berjalan matikan bind9 DNS MASTER dengan service bind9 stop lalu cek dengan perintah
+```
+ping rjp.baratayuda.abimanyu.IT16.com
+```
+- Jika dia berhasil akan muncul seperti pada gambar dibawah ini
+<a href="https://ibb.co/mBB36fM"><img src="https://i.ibb.co/KGGJFT3/Modul2-Nomer-8.jpg" alt="Modul2-Nomer-8" border="0"></a>
+
+
+## Soal No 9 ##
+Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
+
+- 
+
+
+
+
+
+
+
+
 
 ## Soal No 11 ##
 Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
@@ -291,7 +387,438 @@ service apache2 restart
 ## Soal No 14 ##
 Pada subdomain tersebut folder /public hanya dapat melakukan directory listing sedangkan pada folder /secret tidak dapat diakses (403 Forbidden).
 
--
+- pada parikesit.abimanyu.it10.com di /etc/apache2/sites-available/000-default.conf dapat ditambahkan Deny From All sebagai berikut
+
+```
+echo '<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/parikesit.abimanyu.it10
+    ServerName parikesit.abimanyu.it10.com
+    ServerAlias www.parikesit.abimanyu.it10.com
+
+    <Directory /var/www/parikesit.abimanyu.it10>
+        Options +FollowSymLinks -Multiviews
+        AllowOverride All
+    </Directory>
+
+    Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
+	Deny From All
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>' > /etc/apache2/sites-available/parikesit.abimanyu.it10.com.conf
+```
+- Jika sudah ditambahkan bisa melakukan restart apache dengan perintah dibawah.
+```
+service apache2 restart
+```
+- Ketika sudah direstrat maka akan dilakukan testing pada client dengan perintah
+```
+a2ensite parikesit.abimanyu.it10.com
+```
+- Jika berhasil akan muncul seperti pada gambar dibawah ini
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/nR26X01/Modul2-Nomer-14.jpg" alt="Modul2-Nomer-14" border="0"></a>
+
+## Soal No 15 ##
+Buatlah kustomisasi halaman error pada folder /error untuk mengganti error kode pada Apache. Error kode yang perlu diganti adalah 404 Not Found dan 403 Forbidden.
+
+- pada parikesit.abimanyu.it10.com di /etc/apache2/sites-available/000-default.conf dapat ditambahkan jenis error dan path menuju file error kustomnya.
+```
+echo '<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/parikesit.abimanyu.it10
+    ServerName parikesit.abimanyu.it10.com
+    ServerAlias www.parikesit.abimanyu.it10.com
+
+    <Directory /var/www/parikesit.abimanyu.it10>
+        Options +FollowSymLinks -Multiviews
+        AllowOverride All
+		Options + Indexes
+    </Directory>
+
+    Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>' > /etc/apache2/sites-available/parikesit.abimanyu.it10.com.conf
+```
+- Langkah selanjutnya mungkin bisa lakukan restart apache
+```
+service apache2 restart
+```
+- Selanjutkan lakukan testing jika berhasil dia akan memunculkan pada gambar dibawah ini
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/hyyrHLn/Modul2-Nomer-15.jpg" alt="Modul2-Nomer-15" border="0"></a>
+
+## Soal No 16 ##
+Buatlah suatu konfigurasi virtual host agar file asset www.parikesit.abimanyu.yyy.com/public/js menjadi 
+www.parikesit.abimanyu.yyy.com/js 
+
+- menambahkan alias pada parikesit.abimanyu.it10.com di /etc/apache2/sites-available/000-default.conf sebagai berikut.
+```
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.it10.com
+        ServerName abimanyu.it10.com
+        ServerAlias www.abimanyu.it10.com
+        <Directory/var/www/abimanyu.it10.com/index.php/home>
+                Options +Indexes
+        </Directory>
+
+        Alias"/home""/var/www/abimanyu.it10.com/index.php/home"
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.it10
+        ServerName parikesit.abimanyu.it10.com
+        ServerALiaswww.parikesit.abimanyu.it10.com
+        <Directory /var/www/parikesit.abimanyu.it10/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+       ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+```
+- kemudian lakukan restart pada apache
+```
+service apache2 restart
+```
+- kemudian untuk testing dapat dilakukan dengan lynx www.parikesit.abimanyu.it10.com/js diperoleh
+<a href="https://ibb.co/ckYYh5v"><img src="https://i.ibb.co/bQbb5h3/Modul2-Nomer-16.jpg" alt="Modul2-Nomer-16" border="0"></a>
+
+- jika berhasl akan menampilkan tampilan seperti pada gambar diatas.
+
+## Soal No 17 ##
+Agar aman, buatlah konfigurasi agar www.rjp.baratayuda.abimanyu.yyy.com hanya dapat diakses melalui port 14000 dan 14400.
+
+- Mungkin kita bisa tambahkan konfigurasi rjp.baratayuda.abimanyu.it10.com kedalam file /etc/apache2/sites-available/000-default.conf namun dengan port 14000 dan 14400.
+
+```
+
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.it10.com
+        ServerName abimanyu.it10.com
+        ServerAlias www.abimanyu.it10.com
+        <Directory/var/www/abimanyu.it10.com/index.php/home>
+                Options +Indexes
+        </Directory>
+
+        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+
+     ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.it10
+        ServerName parikesit.abimanyu.it10.com
+        ServerALiaswww.parikesit.abimanyu.it10.com
+        <Directory /var/www/parikesit.abimanyu.it10/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+        ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.it10
+        ServerName rjp.baratayuda.abimanyu.it10.com
+        ServerALias www.rjp.baratayuda.abimanyu.it10.com
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+```
+- kemudian tambahkan port 14000 dan 14400 pada konfigurasi port /etc/apache2/ports.conf sebagai berikut
+```
+listen 80;
+        listen [::]:80;
+
+        server_name arjuna.it10.com;
+
+        location / {
+            proxy_pass http://nodes_lb;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+```
+- Setelah itu lakukan restart apache
+```
+service apache2 restart
+```
+- setelah itu melakukan testing, untuk mengetahui program berjalan atau tidak jika berhasil dia akan memunculkan seperti pada gambar dibawah
+<a href="https://ibb.co/j5WWnWB"><img src="https://i.ibb.co/7zRRsR8/Modul2-Nomer-17-18-2jpeg.jpg" alt="Modul2-Nomer-17-18-2jpeg" border="0"></a>
+
+## Soal No 18 ##
+Untuk mengaksesnya buatlah autentikasi username berupa “Wayang” dan password “baratayudayyy” dengan yyy merupakan kode kelompok. Letakkan DocumentRoot pada /var/www/rjp.baratayuda.abimanyu.yyy.
+
+- Yang pertama lakukan setting username dan password pada suatu folder
+```
+mkdir /etc/apache2/passwd
+```
+- kemudian pada rjp.baratayuda.abimanyu.it10.com di /etc/apache2/sites-available/000-default.conf ditambahkan sebagai berikut
+```
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.it10.com
+        ServerName abimanyu.it10.com
+        ServerAlias www.abimanyu.it10.com
+        <Directory/var/www/abimanyu.it10.com/index.php/home>
+                Options +Indexes
+        </Directory>
+
+        Alias"/home""/var/www/abimanyu.it10.com/index.php/home"
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.it10
+        ServerName parikesit.abimanyu.it10.com
+        ServerALiaswww.parikesit.abimanyu.it10.com
+        <Directory /var/www/parikesit.abimanyu.it10/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+      ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.it10
+        ServerName rjp.baratayuda.abimanyu.it10.com
+        ServerALias www.rjp.baratayuda.abimanyu.it10.com
+        <Directory/var/www/rjp.baratayuda.abimanyu.it10>
+                AuthType Basic
+                AuthName "Restricted Files"
+                # (Following line optional)
+                AuthBasicProvider file
+                AuthUserFile "/etc/apache2/passwd/password"
+                Require user Wayang
+        </Directory>
+       ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+```
+- Kemudian restrart apache
+```
+service apache2 restart
+```
+- sehingga jika dilakukan testing pada port 14000
+```
+lynx www.rjp.baratayuda.abimanyu.b21.com:14000
+```
+- Jika berhasil dia akan memunculkan hasil seperti gambar dibawah ini
+<a href="https://ibb.co/c3563sg"><img src="https://i.ibb.co/qjGNj2y/Modul2-Nomer-17-18-1.jpg" alt="Modul2-Nomer-17-18-1" border="0"></a>
+
+## Soal No 19 ##
+Buatlah agar setiap kali mengakses IP dari Abimanyu akan secara otomatis dialihkan ke www.abimanyu.yyy.com (alias)
+
+- Pertama kita akan melakukan enable pada rewrite dengan
+```
+a2enmod rewrite
+```
+- pada abimanyu.it10.com di /etc/apache2/sites-available/000-default.conf dapat ditambahkan RewriteRule dan RewriteCond sebagai berikut.
+
+```
+
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.it10.com
+        ServerName abimanyu.it10.com
+        ServerAlias www.abimanyu.it10.com
+        <Directory/var/www/abimanyu.it10.com/index.php/home>
+                Options +Indexes
+        </Directory>
+        <Directory /var/www>
+        RewriteEngine on
+        RewriteCond %{HTTTP_HOST} ^10\.19\.3.4$
+        RewriteRule /.* http://www.abimanyu.b21.com/index.php/home."
+        </Directory>
+        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.it10
+        ServerName parikesit.abimanyu.it10.com
+        ServerALiaswww.parikesit.abimanyu.it10.com
+        <Directory /var/www/parikesit.abimanyu.it10/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+    ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.it10
+        ServerName rjp.baratayuda.abimanyu.it10.com
+        ServerALias www.rjp.baratayuda.abimanyu.it10.com
+        <Directory/var/www/rjp.baratayuda.abimanyu.it10>
+                AuthType Basic
+                AuthName "Restricted Files"
+                # (Following line optional)
+                AuthBasicProvider file
+                AuthUserFile "/etc/apache2/passwd/password"
+        </Directory>
+           ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+```
+- Selanjutkan bisa lakukan restart apache
+```
+service apache2 restart
+```
+- Langkah terakhir lakukan testing untuk mengetahui apakah program jalan atau tidak
+```
+lynx www.abimanyu.it10.com
+```
+- Jika sudah melakukan testing maka akan muncul seperti pada gambar dibawah
+<a href="https://ibb.co/2PNqb6b"><img src="https://i.ibb.co/4MdWQfQ/Modul2-Nomer-19.jpg" alt="Modul2-Nomer-19" border="0"></a>
+
+## Soal No 20 ##
+Karena website www.parikesit.abimanyu.yyy.com semakin banyak pengunjung dan banyak gambar gambar random, maka ubahlah request gambar yang memiliki substring “abimanyu” akan diarahkan menuju abimanyu.png.
+
+- melakukan enable pada rewrite dengan
+```
+a2enmod rewrite
+```
+- pada parikesit.abimanyu.it10.com di /etc/apache2/sites-available/000-default.conf dapat ditambahkan redirect pada request yang memiliki kata abimanyu dan extension jpg atau png.
+```
+VirtualHost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/abimanyu.it10.com
+        ServerName abimanyu.it10.com
+        ServerAlias www.abimanyu.it10.com
+        <Directory/var/www/abimanyu.it10.com/index.php/home>
+                Options +Indexes
+        </Directory>
+        <Directory /var/www>
+        RewriteEngine on
+        RewriteRule ^public/images/abimanyu\.png$ - [L]
+        RewriteCond %{REQUEST_URI} abimanyu
+        RewriteRule \.(jpg|png)$ /public/images/abimanyu.png [R=301,L]
+        </Directory>
+        Alias"/home""/var/www/abimanyu.it10.com/index.php/home"
+
+        ErrorLog $EAPACHE_LOG_DIR]/error.Log
+        CustomLog $[APACHE_LOG_DIR]/access.log combined
+
+</VirtualHost>
+
+<Virtualhost *:80>
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot/var/www/parikesit.abimanyu.it10
+        ServerName parikesit.abimanyu.it10.com
+        ServerALiaswww.parikesit.abimanyu.it10.com
+        <Directory /var/www/parikesit.abimanyu.it10/secret>
+                Deny From All
+        </Directory>
+        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        ErrorDocument403 /error/403.html
+        ErrorDocument 404 /error/404.html
+        ErrorLog ${APACHE_LOG_DIR} /error. Log
+        CustomLog ${APACHE_LOG_DIR}/access.Log combined
+
+</VirtualHost>
+
+<VirtualHost *:14000 *:14400>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/rjp.baratayuda.abimanyu.it10
+        ServerName rjp.baratayuda.abimanyu.it10.com
+        ServerALias www.rjp.baratayuda.abimanyu.it10.com
+        <Directory/var/www/rjp.baratayuda.abimanyu.it10>
+                AuthType Basic
+                AuthName "Restricted Files"
+                # (Following line optional)
+                AuthBasicProvider file
+                AuthUserFile "/etc/apache2/passwd/password"
+                Require user Wayang
+        </Directory>
+        ErrorLog $EAPACHE._LOG_DIR /error.Log
+        CustomLog $[APACHE_LOG_DIR]/access.log combined
+</VirtualHost>
+```
+- kemudian setelah itu lakukan restart pada apache
+```
+service apache2 restart
+```
+- test dengan lynx www.parikesit.abimanyu.it10.com/public/images/uwogh.jpg
+<a href="https://ibb.co/tBs7NQR"><img src="https://i.ibb.co/dB2d3jZ/Modul2-Nomer-20-1.jpg" alt="Modul2-Nomer-20-1" border="0"></a>
+<a href="https://ibb.co/BtzsPL6"><img src="https://i.ibb.co/ZVLTJdg/Modul2-Nomer-20-2.jpg" alt="Modul2-Nomer-20-2" border="0"></a>
+
+- jika berhasil dia akan memunculkan perintah yang ada pada gambar diatas.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -193,6 +193,111 @@ Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatl
 
 -
 
+## Soal No 11 ##
+Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy
+
+- Pertama kita akan melakukan installasi apache
+```
+apt-get install apache2
+service apache2 start
+```
+- kemudian pada /etc/apache2/sites-available/000-default.conf ditambahkan seperti dibawah ini.
+```
+echo '<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/abimanyu.it10
+    ServerName abimanyu.it10.com
+    ServerAlias www.abimanyu.it10.com
+    
+    <Directory /var/www/abimanyu.it10>
+        Options +FollowSymLinks -Multiviews
+        AllowOverride All
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>' > /etc/apache2/sites-available/abimanyu.it10.com.conf
+```
+- Jika sudah menambahkan, selanjutnya melakukan restart
+```
+apt-get install libapache2-mod-php7.0
+service apache2 restart
+```
+- lakukan dilakukan testing pada client, seperti gambar dibawah ini jika berhasil.
+<a href="https://ibb.co/QJFmhbK"><img src="https://i.ibb.co/grMgQjR/Modul2-Nomer-11.jpg" alt="Modul2-Nomer-11" border="0"></a>
+
+## Soal No 12 ##
+Setelah itu ubahlah agar url www.abimanyu.yyy.com/index.php/home menjadi www.abimanyu.yyy.com/home.
+
+- tambahkan alias pada /etc/apache2/sites-available/000-default.conf sebagai berikut
+```
+echo '<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/parikesit.abimanyu.it10
+    ServerName parikesit.abimanyu.it10.com
+    ServerAlias www.parikesit.abimanyu.it10.com
+
+    <Directory /var/www/parikesit.abimanyu.it10>
+        Options +FollowSymLinks -Multiviews
+        AllowOverride All
+    </Directory>
+
+    Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>' > /etc/apache2/sites-available/parikesit.abimanyu.it10.com.conf
+```
+- Jika sudah menambahkan alias, kemudian lakukan restart dengan perintah
+```
+service apache2 restart
+```
+- Setelah melakukan restrat kita akan menjalankan jika sudah bisa jalan maka akan terlihat seperti gambar dibawah ini
+<a href="https://ibb.co/TcMgBQF"><img src="https://i.ibb.co/H7THDck/Modul2-Nomer-12.jpg" alt="Modul2-Nomer-12" border="0"></a>
+
+
+## Soal No 13 ##
+Selain itu, pada subdomain www.parikesit.abimanyu.yyy.com, DocumentRoot disimpan pada /var/www/parikesit.abimanyu.yyy
+
+- Pertama kita melakukan pada /etc/apache2/sites-available/000-default.conf tambahkan konfigurasi sebagai berikut.
+```
+echo '<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/parikesit.abimanyu.it10
+    ServerName parikesit.abimanyu.it10.com
+    ServerAlias www.parikesit.abimanyu.it10.com
+
+    <Directory /var/www/parikesit.abimanyu.it10>
+        Options +FollowSymLinks -Multiviews
+        AllowOverride All
+    </Directory>
+
+    Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+</VirtualHost>' > /etc/apache2/sites-available/parikesit.abimanyu.it10.com.conf
+```
+- kemudian restart apache terlebih dahulu dengan perintah dibawah
+```
+service apache2 restart
+```
+- untuk testing dapat dilakukan a2ensite parikesit.abimanyu.it10.com maka akan memunculkan hasil sesuai dengan gambar dibawah.
+<a href="https://ibb.co/xYK1nTQ"><img src="https://i.ibb.co/LrDxT7f/Modul2-Nomer-13.jpg" alt="Modul2-Nomer-13" border="0"></a>
+
+## Soal No 14 ##
+Pada subdomain tersebut folder /public hanya dapat melakukan directory listing sedangkan pada folder /secret tidak dapat diakses (403 Forbidden).
+
+-
+
+
+
+
+
+
 
 
 

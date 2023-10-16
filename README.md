@@ -157,6 +157,47 @@ apt-get install dnsutils
 ## Soal No 6 ##
 Agar dapat tetap dihubungi ketika DNS Server Yudhistira bermasalah, buat juga Werkudara sebagai DNS Slave untuk domain utama.
 
+- Edit file /etc/bind/named.conf.local dan sesuaikan dengan syntax berikut.
+```
+zone "abimanyu.it10.com" {
+  type master;
+  notifty yes;
+  also-notify {192.238.1.5; };
+  allow-transfer {192.238.1.5; };
+  file "/etc/bind/jarkom/abimanyu.it10.com";
+};
+```
+- Jika sudah, lakukan restart bind9
+```
+service bind9 restart
+```
+- lakukan update terlebih dahulu menggunakan apt-get update, Setalah melakukan update silahkan install aplikasi bind9 dengan perintah.
+```
+apt-get install bind9 -y
+```
+- Kemudian buka file /etc/bind/named.conf.local dan tambahkan syntax berikut.
+```
+zone "abimanyu.it10.com" {
+    type slave;
+    masters { 10.78.1.2; };
+    file "/etc/bind/jarkom/abimanyu.it10.com";
+};
+```
+- Lakukan ping pada client. Jika ping berhasil maka konfigurasi DNS slave telah berhasil seperti gambar dibawah.
+<a href="https://ibb.co/8cbM9Gm"><img src="https://i.ibb.co/SrcNBH6/Modul2-Nomer-6-2.jpg" alt="Modul2-Nomer-6-2" border="0"></a>
+- Selanjutnya, jika sudah berhasil lakukan stop pada server seperti pada gambar dibawah
+<a href="https://ibb.co/stXwd1Q"><img src="https://i.ibb.co/0QzMR9Z/Modul2-Nomer-6-1.jpg" alt="Modul2-Nomer-6-1" border="0"></a>
+
+## Soal No 7 ##
+Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatlah subdomain khusus untuk perang yaitu baratayuda.abimanyu.yyy.com dengan alias www.baratayuda.abimanyu.yyy.com yang didelegasikan dari Yudhistira ke Werkudara dengan IP menuju ke Abimanyu dalam folder Baratayuda.
+
+-
+
+
+
+
+
+
 
 
 

@@ -279,15 +279,186 @@ ping rjp.baratayuda.abimanyu.IT16.com
 ## Soal No 9 ##
 Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
 
-- 
+- Membuat file /var/www/jarkom/index.php
+```
+<?php
+echo "Hello World from prabukusuma";
+?>
+```
+- Membuat konfigurasi /etc/nginx/sites-available/jarkom
 
+```
+server {
+    listen 8001;
+    listen [::]:8001;
 
+    root /var/www/arjuna.it10.com;
+    index index.php index.html index.htm index.nginx-debian.html;
 
+    server_name arjuna.it10.com;
 
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
 
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
 
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    }
 
+    location ~ /\.ht {
+        deny all;
+    }
+}
+```
+- Kemudian jalankan command dengan perintah
+```
+server {
+ln -s /etc/nginx/sites-available/jarkom /etc/nginx/sites-enabled/jarkom
 
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+
+service php7.2-fpm start
+
+service php7.2-fpm status
+```
+- jika berhasil dia akan memunculkan seperti pada gambar dibawah ini
+<a href="https://ibb.co/445B5Sm"><img src="https://i.ibb.co/3SLtLFr/Modul2-Nomer-9-1.jpg" alt="Modul2-Nomer-9-1" border="0"></a>
+- Selanjutnya Pada nodes Wisanggeni membuat file /var/www/jarkom/index.php
+```
+<?php
+echo "Hello World from wisanggeni";
+?>
+```
+- Setelah itu Membuat konfigurasi /etc/nginx/sites-available/jarkom
+```
+server {
+    listen 8003;
+    listen [::]:8003;
+
+    root /var/www/arjuna.it10.com;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    server_name arjuna.it10.com;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+```
+- Sama seperti tadi jalankan command terlebih dahulu dengan perintah
+
+```
+server {
+ln -s /etc/nginx/sites-available/jarkom /etc/nginx/sites-enabled/jarkom
+
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+
+service php7.2-fpm start
+
+service php7.2-fpm status
+```
+- Selanjutkan jika sudah dijalankan akan muncul seperti pada gambar dibawah
+src="https://i.ibb.co/7g7rnPB/Modul2-Nomer-9-3.jpg" alt="Modul2-Nomer-9-3" border="0"></a>
+
+- Pada nodes Abimanyu membuat file /var/www/jarkom/index.php
+```
+<?php
+echo "Hello World from prabukusuma";
+?>
+```
+- Membuat konfigurasi /etc/nginx/sites-available/jarkom
+```
+server {
+    listen 8002;
+    listen [::]:8002;
+
+    root /var/www/arjuna.it10.com;
+    index index.php index.html index.htm index.nginx-debian.html;
+
+    server_name arjuna.it10.com;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+```
+- kemudian jalankan command
+```
+server {
+ln -s /etc/nginx/sites-available/jarkom /etc/nginx/sites-enabled/jarkom
+
+rm /etc/nginx/sites-enabled/default
+
+service nginx restart
+
+service php7.2-fpm start
+
+service php7.2-fpm status
+```
+- jika berhasil akan muncul seperti dibawah ini
+
+<a href="https://ibb.co/8mRQfDs"><img src="https://i.ibb.co/Bf7YQV3/Modul2-Nomer-9-2.jpg" alt="Modul2-Nomer-9-
+
+## Soal No 10 ##
+Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003.
+
+- Pertama kita akan membuat konfigurasi pada node Arjuna untuk load balancer pada file /etc/nginx/sites-available/load-balancer
+
+```
+ upstream nodes_lb {
+        server 192.238.3.2:8001;
+        server 192.238.3.3:8002;
+        server 192.238.3.4:8003;
+    }
+
+    server {
+        listen 80;
+        listen [::]:80;
+
+        server_name arjuna.it10.com;
+
+        location / {
+            proxy_pass http://nodes_lb;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+    }
+```
+- Mejalankan command dan lakukan restrat nginx
+```
+ ln -s /etc/nginx/sites-available/load-balancer /etc/nginx/sites-enabled/load-balancer
+
+service nginx restart
+```
+- Jika setelah direstrat dan sudah melakukan command akan muncul pada gambar dibawah
+<a href="https://ibb.co/tXTHzzy"><img src="https://i.ibb.co/yScNppL/Modul2-Nomer-10.jpg" alt="Modul2-Nomer-10" border="0"></a>
 
 ## Soal No 11 ##
 Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy

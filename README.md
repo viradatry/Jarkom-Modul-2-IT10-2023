@@ -689,7 +689,7 @@ VirtualHost *:80>
                 Options +Indexes
         </Directory>
 
-        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+        Alias"/home""/var/www/abimanyu.it10.com/index.php/home"
 
      ErrorLog ${APACHE_LOG_DIR} /error. Log
         CustomLog ${APACHE_LOG_DIR}/access.Log combined
@@ -706,7 +706,7 @@ VirtualHost *:80>
         <Directory /var/www/parikesit.abimanyu.it10/secret>
                 Deny From All
         </Directory>
-        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
         ErrorDocument403 /error/403.html
         ErrorDocument 404 /error/404.html
         ErrorLog ${APACHE_LOG_DIR} /error. Log
@@ -815,7 +815,7 @@ service apache2 restart
 ```
 - sehingga jika dilakukan testing pada port 14000
 ```
-lynx www.rjp.baratayuda.abimanyu.b21.com:14000
+lynx www.rjp.baratayuda.abimanyu.it10.com:14000
 ```
 - Jika berhasil dia akan memunculkan hasil seperti gambar dibawah ini
 <a href="https://ibb.co/c3563sg"><img src="https://i.ibb.co/qjGNj2y/Modul2-Nomer-17-18-1.jpg" alt="Modul2-Nomer-17-18-1" border="0"></a>
@@ -843,9 +843,9 @@ VirtualHost *:80>
         <Directory /var/www>
         RewriteEngine on
         RewriteCond %{HTTTP_HOST} ^10\.19\.3.4$
-        RewriteRule /.* http://www.abimanyu.b21.com/index.php/home."
+        RewriteRule /.* http://www.abimanyu.it10.com/index.php/home."
         </Directory>
-        Alias"/home""/var/www/abimanyu.b21.com/index.php/home"
+        Alias"/home""/var/www/abimanyu.it10.com/index.php/home"
 
     ErrorLog ${APACHE_LOG_DIR} /error. Log
         CustomLog ${APACHE_LOG_DIR}/access.Log combined
@@ -939,7 +939,7 @@ VirtualHost *:80>
         <Directory /var/www/parikesit.abimanyu.it10/secret>
                 Deny From All
         </Directory>
-        Alias "/js" "/var/www/parikesit.abimanyu.b21/public/js"
+        Alias "/js" "/var/www/parikesit.abimanyu.it10/public/js"
         ErrorDocument403 /error/403.html
         ErrorDocument 404 /error/404.html
         ErrorLog ${APACHE_LOG_DIR} /error. Log
